@@ -8,6 +8,7 @@
   - [Local inference](#local-inference)
 - [LLM provider](#llm-provider)
   - [`OpenRouter`](#openrouter)
+- [Free models](#free-models)
 - [LLM provider API](#llm-provider-api)
   - [`OpenAI`-compatible API](#openai-compatible-api)
   - [Request to LLM provider API](#request-to-llm-provider-api)
@@ -48,7 +49,9 @@ Docs:
 
 ### `OpenRouter`
 
-[`OpenRouter`](https://openrouter.ai/) provides [free models](https://openrouter.ai/collections/free-models).
+## Free models
+
+- [`OpenRouter`](https://openrouter.ai/) provides [free models](https://openrouter.ai/collections/free-models).
 
 ## LLM provider API
 
