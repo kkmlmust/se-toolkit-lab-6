@@ -1,33 +1,45 @@
-# Agent: LLM Caller
+# Agent: Documentation Assistant with Tools
 
 ## What is this?
-A Python script that asks questions to an AI and returns JSON answers.
+An AI agent that can read files and list directories to answer questions about the project wiki.
 
-## LLM Provider
-- **Provider**: Qwen Code API (on VM)
-- **Model**: qwen3-coder-plus
-- **API**: http://10.93.26.107:42005/v1
+## Tools
+The agent has two tools:
+1. **read_file** - Read contents of any file in the project
+2. **list_files** - List files in a directory
 
-## Setup
-# Install dependencies
+## Agentic Loop
+1. Send question + tool definitions to LLM
+2. If LLM requests tools → execute them, add results, repeat
+3. If LLM gives final answer → output JSON with answer, source, and all tool calls
+4. Maximum 10 tool calls per question
+
+## Output Format
+```json
+{
+  "answer": "The answer text",
+  "source": "wiki/file.md#section",
+  "tool_calls": [
+    {"tool": "list_files", "args": {"path": "wiki"}, "result": "file1.md\nfile2.md"},
+    {"tool": "read_file", "args": {"path": "wiki/file.md"}, "result": "file contents..."}
+  ]
+}
+```
+# Security
+Prevents directory traversal (cannot read files outside project)
+
+All paths are validated against project root
+
+# Setup 
+Same as Task 1:
+```bash
 uv add openai python-dotenv
-
-# Create config
 cp .env.agent.example .env.agent.secret
-# Edit .env.agent.secret with your VM details
-# Usage
-uv run agent.py "Your question here"
+# Edit with your VM details
+```
+# Usage 
+uv run agent.py "How do you resolve a merge conflict?"
 
-# Example
-uv run agent.py "What is REST?"
+# Testing
+uv run pytest tests/test_task2.py -v
 
-# Output
-{"answer": "REST stands for Representational State Transfer.", "tool_calls": []}
-
-# Testing 
-uv run pytest tests/test_task1.py -v
-
-# Files
--agent.py - main script
--.env.agent.secret - configuration (not in git)
--tests/test_task1.py - tests
